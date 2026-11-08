@@ -1,0 +1,3 @@
+[submodule "references/KFRFlow.jl"]
+	path = references/KFRFlow.jl
+	url = https://github.com/amaurais/KFRFlow.jl

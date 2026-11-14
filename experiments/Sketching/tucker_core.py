@@ -179,7 +179,11 @@ def tucker_axby(alpha: float, X: TuckerTensor, beta: float, Y: TuckerTensor, tol
     return Z
 
 
-def tucker_sum(S: Sequence[TuckerTensor], a: Sequence[float], tol: float) -> TuckerTensor:
+def tucker_sum(
+        S: Sequence[TuckerTensor],
+        a: Sequence[float] | NDArray[np.float64],
+        tol: float
+    ) -> TuckerTensor:
     #==========================================================================
     #   Input Validation
     #==========================================================================

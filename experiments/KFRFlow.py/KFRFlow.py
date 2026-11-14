@@ -3,11 +3,11 @@ import numpy as np
 from pathlib import Path
 
 # define the log density ratio (ldr)
-ldr = lambda x: -8 * (np.norm(x) - 2)**2
+ldr = lambda x: -8 * (np.linalg.norm(x) - 2)**2
 
 # define the kernel and the kernel gradient
-kernel = lambda x, y: (1 + np.sqrt(3) / 45 * np.norm(x - y)) * np.exp(- np.sqrt(3) / 45 * np.norm(x - y))
-nabla_kernel = lambda x, y: -3 / 45**2 * np.exp(-np.sqrt(3) / 45 * np.norm(x - y)) * (x - y) 
+kernel = lambda x, y: (1 + np.sqrt(3) / 45 * np.linalg.norm(x - y)) * np.exp(- np.sqrt(3) / 45 * np.linalg.norm(x - y))
+nabla_kernel = lambda x, y: -3 / 45**2 * np.exp(-np.sqrt(3) / 45 * np.linalg.norm(x - y)) * (x - y) 
 # we can't use these equations; left as references
 
 

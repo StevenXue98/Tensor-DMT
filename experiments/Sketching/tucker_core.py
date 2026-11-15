@@ -189,7 +189,7 @@ def tucker_sum(
     #==========================================================================
     if len(S) != len(a):
         raise ValueError(
-            f"Size mismatch: S has {len(S)} tensors, "
+            f"Size mismatch: 'S' has {len(S)} tensors, "
             f"but 'a' has {len(a)} floats."
         )
 

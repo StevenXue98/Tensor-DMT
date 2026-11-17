@@ -13,6 +13,18 @@ from tucker_core import (
     tucker_rounding,
 )
 
+__all__ = [
+    "TuckerOperator",
+    "TuckerPreconditioner",
+    "RoundingSum",
+    "TuckerTimer",
+    "TuckerGMRESResult",
+    "preconditioner",
+    "tucker_GMRES",
+]
+
+
+
 TuckerOperator = Callable[
     [TuckerTensor],
     Sequence[TuckerTensor],

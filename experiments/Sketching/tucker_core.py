@@ -57,6 +57,13 @@ def tucker_inner_prod(X: TuckerTensor, Y:TuckerTensor) -> float:
     W = [X.factors[i].T @ Y.factors[i] for i in range(len(X.rank))]
 
     J = tl.tucker_to_tensor((Y.core, W))
+
+    if isinstance(X.core, sparse.COO):
+        return np.vdot(
+            X.core.data,
+            J[tuple(X.core.coords)],
+        )
+
     return np.vdot(X.core, J)
 
 

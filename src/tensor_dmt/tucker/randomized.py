@@ -2,16 +2,16 @@ import sparse
 import numpy as np
 import tensorly as tl
 from numpy.typing import NDArray
-from tucker_core import tucker_scale
 from collections.abc import Sequence
 from tensorly.tucker_tensor import TuckerTensor
 from tensorly.tenalg.core_tenalg import mode_dot, multi_mode_dot, unfolding_dot_khatri_rao
+
+from .core import tucker_scale
 
 __all__ = [
     "tucker_subranks_kron",
     "tucker_randomize_sum",
 ]
-
 
 
 def tucker_subranks_kron(

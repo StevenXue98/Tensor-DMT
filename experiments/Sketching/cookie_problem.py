@@ -7,9 +7,9 @@ from dataclasses import dataclass
 from scipy.sparse.linalg import splu
 from cookie_data import load_cookie_data
 from tensorly.tucker_tensor import TuckerTensor
-from tucker_randomized import tucker_randomize_sum
-from tucker_GMRES import TuckerTimer, RoundingSum, preconditioner, tucker_GMRES
-from tucker_core import OperatorMatrix, tucker_scale, tucker_norm, tucker_axby, tucker_summands_kron_op, tucker_sum
+from tensor_dmt.tucker.randomized import tucker_randomize_sum
+from tensor_dmt.tucker.gmres import TuckerTimer, RoundingSum, preconditioner, tucker_GMRES
+from tensor_dmt.tucker.core import OperatorMatrix, tucker_scale, tucker_norm, tucker_axby, tucker_summands_kron_op, tucker_sum
 
 
 __all__ = [

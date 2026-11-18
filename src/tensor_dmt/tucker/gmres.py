@@ -6,7 +6,7 @@ from scipy.sparse.linalg import SuperLU
 from collections.abc import Callable, Sequence
 from tensorly.tucker_tensor import TuckerTensor
 
-from tucker_core import (
+from .core import (
     tucker_scale,
     tucker_inner_prod,
     tucker_norm,
@@ -22,7 +22,6 @@ __all__ = [
     "preconditioner",
     "tucker_GMRES",
 ]
-
 
 
 TuckerOperator = Callable[

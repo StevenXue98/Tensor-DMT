@@ -27,7 +27,6 @@ __all__ = [
 ]
 
 
-
 def tucker_scale(Y: TuckerTensor, alpha: float) -> TuckerTensor:
     #==========================================================================
     #   Scale Tensor
@@ -39,7 +38,7 @@ def tucker_scale(Y: TuckerTensor, alpha: float) -> TuckerTensor:
     return X
 
 
-def tucker_inner_prod(X: TuckerTensor, Y:TuckerTensor) -> float:
+def tucker_inner_prod(X: TuckerTensor, Y: TuckerTensor) -> float:
     #==========================================================================
     #   Input Validation
     #==========================================================================
@@ -105,13 +104,13 @@ def tucker_rounding(Y: TuckerTensor, tol: float):
     #==========================================================================
     U = list(Y.factors)
     N = len(U)
-    
+
     # EXPLICITLY DENSIFY THE CORE:
-    # If Y came from TuckerAxby, its core is an sptensor. The subsequent 
-    # ttm operations with dense R matrices will destroy sparsity anyway. 
+    # If Y came from TuckerAxby, its core is an sptensor. The subsequent
+    # ttm operations with dense R matrices will destroy sparsity anyway.
     # Converting to a dense tensor immediately avoids massive overhead.
     core = sparse.asnumpy(Y.core)
-    
+
     #==========================================================================
     #   Step 1: Orthogonalize factors via QR
     #==========================================================================
@@ -119,16 +118,16 @@ def tucker_rounding(Y: TuckerTensor, tol: float):
         Q, R = np.linalg.qr(U[i])
         U[i] = Q
         core = mode_dot(core, R, i)
-    
+
     #==========================================================================
     #   Step 2: Truncate core via SVD
     #==========================================================================
-    
-    # PRE-CALCULATE ERROR BUDGET: 
+
+    # PRE-CALCULATE ERROR BUDGET:
     # The total allowable Frobenius norm error is split equally among the N modes.
     norm_core_sq = np.linalg.norm(core)**2
     eigsumthresh = (tol**2 * norm_core_sq) / N
-    
+
     for i in range(N):
         core_i      = tl.unfold(core, i)
         V, s, _     = np.linalg.svd(core_i, full_matrices=False)
@@ -138,7 +137,7 @@ def tucker_rounding(Y: TuckerTensor, tol: float):
         V_trunc     = V[:, :rank_i]
         U[i]        = U[i] @ V_trunc
         core        = mode_dot(core, V_trunc.T, i)
-    
+
     X = TuckerTensor((core, U))
 
     return X
@@ -155,18 +154,18 @@ def tucker_axby(alpha: float, X: TuckerTensor, beta: float, Y: TuckerTensor, tol
     G2 = Y.core
     U1 = X.factors
     U2 = Y.factors
-    
+
     #==========================================================================
     #   Concatenate factor matrices
     #==========================================================================
     U_new = [np.concatenate((U1[i], U2[i]), axis=1) for i in range(len(U1))]
-    
+
     #==========================================================================
     #   Construct the sparse core tensor
     #==========================================================================
     spG1 = sparse.COO(G1)
     spG2 = sparse.COO(G2)
-    
+
     offset = np.asarray(G1.shape)[:, None]
 
     coords = np.concatenate([spG1.coords, spG2.coords + offset], axis=1)
@@ -176,7 +175,7 @@ def tucker_axby(alpha: float, X: TuckerTensor, beta: float, Y: TuckerTensor, tol
 
     G_new = sparse.COO(coords, data, shape=new_shape)
     Z = TuckerTensor((G_new, U_new))
-    
+
     #==========================================================================
     #   Truncate if tolerance is provided (Eager Rounding)
     #==========================================================================
@@ -205,7 +204,7 @@ def tucker_sum(
 
     if tol < 0:
         raise ValueError(f"Tolerance 'tol' must be non-negative.")
-    
+
     #==========================================================================
     #   Compute Sum and Round
     #==========================================================================

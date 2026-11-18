@@ -16,10 +16,8 @@ __all__ = [
 
 COOKIE_DATA_DIR = (
     Path(__file__).resolve().parents[2]
-    / "references"
-    / "SupSmiPGetal26"
-    / "Data"
-    / "Cookie"
+    / "data"
+    / "cookie"
 )
 
 

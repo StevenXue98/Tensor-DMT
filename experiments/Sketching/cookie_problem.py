@@ -7,9 +7,8 @@ from dataclasses import dataclass
 from scipy.sparse.linalg import splu
 from cookie_data import load_cookie_data
 from tensorly.tucker_tensor import TuckerTensor
-from tensor_dmt.tucker.randomized import tucker_randomize_sum
 from tensor_dmt.tucker.gmres import TuckerTimer, RoundingSum, preconditioner, tucker_GMRES
-from tensor_dmt.tucker.core import OperatorMatrix, tucker_scale, tucker_norm, tucker_axby, tucker_summands_kron_op, tucker_sum
+from tensor_dmt.tucker.core import OperatorMatrix, tucker_scale, tucker_norm, tucker_axby, tucker_summands_kron_op
 
 
 __all__ = [
@@ -46,18 +45,14 @@ class CookieTrialRecord:
 
 
 def run_cookie_problem(
-        config: CookieExperimentConfig = CookieExperimentConfig(),
+        config: CookieExperimentConfig,
+        solvers: tuple[tuple[Method, RoundingSum], ...],
     ) -> list[CookieTrialRecord]: 
     data = load_cookie_data()
     records: list[CookieTrialRecord] = []
-    rng = np.random.default_rng(config.seed)
+    
     lu = splu((data.A0 + data.A1 + data.A2 + data.A3).tocsc())
     prec = lambda x: preconditioner(lu, x)
-    
-    solver_naive = lambda W, a, tol: tucker_sum(W, a, tol)
-    solver_kron = lambda W, a, tol: tucker_randomize_sum(W, a, config.oversampling, tol, "kron", rng, strategy="heur_fine")
-    solver_krp = lambda W, a, tol: tucker_randomize_sum(W, a, config.oversampling, tol, "krp", rng, strategy="heur_fine")
-    solvers: tuple[tuple[Method, RoundingSum], ...] = (("kron", solver_kron), ("krp", solver_krp), ("naive", solver_naive))
 
     for n in config.sizes:
         parameter_values = np.linspace(1.0, 10.0, n)

@@ -48,3 +48,4 @@ Thumbs.db
 
 # Generated experiment output
 experiments/**/outputs/
+experiments/KFRFlow/*.png

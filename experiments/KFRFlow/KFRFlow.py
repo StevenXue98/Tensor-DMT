@@ -5,10 +5,9 @@ from pathlib import Path
 # define the log density ratio (ldr)
 ldr = lambda x: -8 * (np.linalg.norm(x) - 2)**2
 
-# define the kernel and the kernel gradient
+# define the kernel and the kernel gradient for reference
 kernel = lambda x, y: (1 + np.sqrt(3) / 45 * np.linalg.norm(x - y)) * np.exp(- np.sqrt(3) / 45 * np.linalg.norm(x - y))
 nabla_kernel = lambda x, y: -3 / 45**2 * np.exp(-np.sqrt(3) / 45 * np.linalg.norm(x - y)) * (x - y) 
-# we can't use these equations; left as references
 
 
 class donut:
@@ -59,7 +58,6 @@ class donut:
                 self.data.append(self.X.copy())
                 self.times.append(step * delta_t)
 
-    # AI generated
     def plot(self, t=1.0, xmin=-3.0, xmax=3.0, points=300):
         
         if self.d != 2:
@@ -86,7 +84,6 @@ class donut:
         ax.set_aspect("equal")
         return fig, ax
 
-    # AI generated
     def plot_history(self, xmin=-3.0, xmax=3.0, points=300):
         if self.d != 2:
             raise ValueError("The donut plot requires d=2.")

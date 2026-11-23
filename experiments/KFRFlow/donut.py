@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from pathlib import Path
-from tensor_dmt.kfrflow.flow import forward_euler
+from tensor_dmt.kfrflow.flow import kfrflow_euler
 from tensor_dmt.kfrflow.kernels import matern32_kernel
 
 
@@ -88,7 +88,7 @@ def main():
     rng = np.random.default_rng(0)
     X_initial = rng.standard_normal((300, 2))
 
-    result = forward_euler(
+    result = kfrflow_euler(
         X_initial,
         donut_log_ratio,
         matern32_kernel,

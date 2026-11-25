@@ -1,4 +1,5 @@
 import numpy as np
+from time import perf_counter
 
 from dataclasses import dataclass
 
@@ -8,6 +9,8 @@ class FlowResult:
     final_particles: np.ndarray
     history: list[np.ndarray]
     times: list[float]
+    method_name: str
+    elapsed_seconds: float
 
 
 def kfrflow_velocity(X, log_ratio, kernel, nugget=1e-8):
@@ -39,6 +42,7 @@ def kfrflow_euler(
     save_history=False,
     save_every=25,
 ) -> FlowResult:
+    start = perf_counter()
     history = [X.copy()] if save_history else []
     times = [0.0] if save_history else []
 
@@ -53,6 +57,8 @@ def kfrflow_euler(
         final_particles=X,
         history=history,
         times=times,
+        method_name="KFRFlow",
+        elapsed_seconds=perf_counter() - start,
     )
 
 
@@ -86,6 +92,7 @@ def kfrflow_importance(
     save_history=False,
     save_every=25,
 ) -> FlowResult:
+    start = perf_counter()
     history = [X.copy()] if save_history else []
     times = [0.0] if save_history else []
 
@@ -99,4 +106,6 @@ def kfrflow_importance(
         final_particles=X,
         history=history,
         times=times,
+        method_name="KFRFlow-I",
+        elapsed_seconds=perf_counter() - start,
     )
